@@ -1,0 +1,23 @@
+﻿  Base.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Base.cpp(143,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Change.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Change.cpp(118,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Circle.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Circle.cpp(95,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  ellipse.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\ellipse.cpp(123,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Gradient.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Gradient.cpp(123,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Group.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Group.cpp(243,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  line.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\line.cpp(71,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Path.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Path.cpp(613,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  polygon.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\polygon.cpp(64,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Rectangle.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\Rectangle.cpp(128,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  SVGDemo.cpp
+E:\2024-2025\OOP\ProjectSVG\TeamProject\SVGDemo\SVGDemo\SVGDemo.cpp(283,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Generating Code...
