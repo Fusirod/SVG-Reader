@@ -1,4 +1,3 @@
-
 #include "Shape.h"
 
 VOID text::draw(Graphics& gra, List lst) {
