@@ -1,9 +1,6 @@
 #include "Base.h"
 
 string trim(string s) {
-	/*s.erase(remove_if(s.begin(), s.end(), ::isspace), s.end());
-	return s;*/
-
 	string res;
 	for (char c : s)
 		if (!isspace(c))
