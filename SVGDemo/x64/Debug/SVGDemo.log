@@ -1,0 +1,5 @@
+﻿  SVGDemo.cpp
+E:\2024-2025\OOP\SVGDemo\SVGDemo\Path.h(7,20): warning C4305: 'initializing': truncation from 'double' to 'float'
+  (compiling source file 'SVGDemo.cpp')
+  
+  SVGDemo.vcxproj -> E:\2024-2025\OOP\SVGDemo\x64\Debug\SVGDemo.exe
