@@ -355,32 +355,30 @@ void Path::handleArcTo(GraphicsPath& path, const string& data, int& idx, point& 
 void Path::handleQuadraticBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, char& lastCommand) {
     point d1, d;
 
-    // Đọc các điểm điều khiển và đích
+    // Read point
     readSinglePointFirst(data, idx, d1);
     readSinglePointFirst(data, idx, d);
 
     if (command == 'q') {
-        // Xử lý tương đối
         //path.AddBezier(currentPoint.x, currentPoint.y, currentPoint.x + d1.x, currentPoint.y + d1.y, currentPoint.x + d1.x, currentPoint.y + d1.y, currentPoint.x + d.x, currentPoint.y + d.y);
         path.AddBezier(currentPoint.x, currentPoint.y,
-            currentPoint.x + d1.x, currentPoint.y + d1.y,  // Điểm điều khiển 1
-            currentPoint.x + d1.x, currentPoint.y + d1.y,  // Điểm điều khiển 2
-            currentPoint.x + d.x, currentPoint.y + d.y);   // Điểm đích
+            currentPoint.x + d1.x, currentPoint.y + d1.y,  // First control point
+            currentPoint.x + d1.x, currentPoint.y + d1.y,  // Second control point
+            currentPoint.x + d.x, currentPoint.y + d.y);   // Final point
 
-        // Cập nhật tọa độ hiện tại
+        // Update co-ordinates
         currentPoint.x += d.x;
         currentPoint.y += d.y;
     }
     else if (command == 'Q') {
-        // Xử lý tuyệt đối
         //path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, d1.x, d1.y, d.x, d.y);
 
         path.AddBezier(currentPoint.x, currentPoint.y,
-            d1.x, d1.y,  // Điểm điều khiển 1
-            d1.x, d1.y,  // Điểm điều khiển 2
-            d.x, d.y);   // Điểm đích
+            d1.x, d1.y,  // First control point
+            d1.x, d1.y,  // Second control point
+            d.x, d.y);   // Final point
 
-        // Cập nhật tọa độ hiện tại
+        // Update co-ordinates
         currentPoint.x = d.x;
         currentPoint.y = d.y;
     }
