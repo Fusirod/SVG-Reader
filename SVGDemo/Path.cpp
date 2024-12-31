@@ -9,9 +9,6 @@ void readPath(const string& name, const string& value, Path* path) {
         if (value == "none" || value == "transparent") {
             path->strokeOpacity = 0;
         }
-        /*else if (value[0] == 'u' && value[1] == 'r' && value[2] == 'l') {
-            path->strokeId = value.substr(4, value.length() - 5);
-        }*/
         else if (value.substr(0, 4) == "url(" && value.back() == ')') {
             path->strokeId = value.substr(4, value.length() - 5);
         }
