@@ -50,7 +50,8 @@ void removeSpace(string& s) {
 
 
 float clarify(string s) {
-    if (s.empty()) return 0.0f;
+    if (s.empty()) 
+        return 0.0f;
 
     if (s[0] == '.' || (s[0] == '-' && s[1] == '.')) {
         s.insert(0, "0");
