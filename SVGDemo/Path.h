@@ -23,8 +23,8 @@ public:
 	void handleMoveTo(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& startPoint, bool& firstPoint, char& lastCommand);
 	void handleLineTo(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, char& lastCommand);
 	void handleHorizontalLineTo(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, char& lastCommand);
-	void handleVerticalLineTo(const string& data, int& index, char command, GraphicsPath& path, point& current_point, char& last_command);
-	void handleCubicBezier(const string& data, int& index, char command, GraphicsPath& path, point& current_point, point& d2, char& last_command);
+	void handleVerticalLineTo(const string& data, int& index, char command, GraphicsPath& path, point& currentPoint, char& lastCommand);
+	void handleCubicBezier(const string& data, int& index, char command, GraphicsPath& path, point& currentPoint, point& d2, char& lastCommand);
 	void handleSmoothQuadraticBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& lastControlPoint, char& lastCommand);
 	void configurePen(Pen& pen, const string& linecap, const string& linejoin);
 };
