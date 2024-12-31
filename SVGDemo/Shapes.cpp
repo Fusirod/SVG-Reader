@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Shapes.h"
 
-//in each function, we read the value of an attribute of a shape (color, stroke-width, etc.) and assign it to the corresponding field of the shape.
+// In each function, we read the value of an attribute of a shape (color, stroke-width, etc.) and assign it to the corresponding field of the shape.
 void readLine(string name, string value, line* line) {
     if (name == "stroke-opacity") {
         line->strokeOpacity = stof(value);
