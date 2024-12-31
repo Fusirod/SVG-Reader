@@ -6,10 +6,11 @@
 
 class viewBox {
 public:
-	float width, height, minX, minY;
-	float boxWidth, boxHeight;
+	float width, height, minX, minY, boxWidth, boxHeight;
 	viewBox() 
-		: width(1000), height(500), minX(0), minY(0) {}
+		: width(0), height(0), minX(0), minY(0) {}
+	viewBox(float w, float h, float x, float y, float bw, float bh)
+		: width(w), height(h), minX(x), minY(y), boxWidth(bw), boxHeight(bh) {}
 
 	void setAttributes(const string& attri) {
 		istringstream iss(attri);
