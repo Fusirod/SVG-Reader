@@ -389,46 +389,40 @@ void Path::handleQuadraticBezier(const string& data, int& idx, char command, Gra
 void Path::handleSmoothCubicBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& d2, char& lastCommand) {
     point d1, d3, d;
 
-    // Đọc các điểm điều khiển và đích
     readSinglePointFirst(data, idx, d3);
     readSinglePointFirst(data, idx, d);
 
     if (lastCommand == 'c' || lastCommand == 'C' || lastCommand == 's' || lastCommand == 'S') {
-        // Sử dụng điểm điều khiển đối xứng với d2
         d1.x = 2 * currentPoint.x - d2.x;
         d1.y = 2 * currentPoint.y - d2.y;
     }
     else {
-        // Nếu là lệnh đầu tiên, d1 = currentPoint
         d1.x = currentPoint.x;
         d1.y = currentPoint.y;
     }
 
     if (command == 's') {
-        // Xử lý tương đối
         //path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, currentPoint.x + d3.x, currentPoint.y + d3.y, currentPoint.x + d.x, currentPoint.y + d.y);
         
         path.AddBezier(currentPoint.x, currentPoint.y,
-            currentPoint.x + d1.x, currentPoint.y + d1.y,  // Điểm điều khiển 1
-            currentPoint.x + d3.x, currentPoint.y + d3.y,  // Điểm điều khiển 2
-            currentPoint.x + d.x, currentPoint.y + d.y);   // Điểm đích
-
-        // Cập nhật tọa độ hiện tại
+            currentPoint.x + d1.x, currentPoint.y + d1.y, 
+            currentPoint.x + d3.x, currentPoint.y + d3.y, 
+            currentPoint.x + d.x, currentPoint.y + d.y);
         currentPoint.x += d.x;
         currentPoint.y += d.y;
         d2.x = currentPoint.x + d3.x;
         d2.y = currentPoint.y + d3.y;
     }
     else if (command == 'S') {
-        // Xử lý tuyệt đối
+      
         //path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, d3.x, d3.y, d.x, d.y);
 
         path.AddBezier(currentPoint.x, currentPoint.y,
-                        d1.x, d1.y,  // Điểm điều khiển 1
-                        d3.x, d3.y,  // Điểm điều khiển 2
-                        d.x, d.y);   // Điểm đích
+                        d1.x, d1.y, 
+                        d3.x, d3.y, 
+                        d.x, d.y);  
 
-        // Cập nhật tọa độ hiện tại 
+     
         currentPoint.x = d.x;
         currentPoint.y = d.y;
         d2.x = d3.x;
@@ -468,8 +462,6 @@ void Path::handleLineTo(const string& data, int& idx, char command, GraphicsPath
     }
     else if (command == 'L') {
         path.AddLine(currentPoint.x, currentPoint.y, d.x, d.y);
-        /*currentPoint.x = d.x;
-        currentPoint.y = d.y;*/
         currentPoint = d;
     }
 
@@ -509,24 +501,23 @@ void Path::handleVerticalLineTo(const string& data, int& idx, char command, Grap
 void Path::handleCubicBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& d2, char& lastCommand) {
     point d1, control2, d;
 
-    // Đọc các điểm điều khiển và điểm kết thúc
     readSinglePointFirst(data, idx, d1);
     readSinglePointFirst(data, idx, control2);
     readSinglePointFirst(data, idx, d);
 
-    // Tính toán các điểm điều khiển và điểm kết thúc
+    // Calculate those point
     point p1 = (command == 'c') ? point{ currentPoint.x + d1.x, currentPoint.y + d1.y } : d1;
     point p2 = (command == 'c') ? point{ currentPoint.x + control2.x, currentPoint.y + control2.y } : control2;
     point p3 = (command == 'c') ? point{ currentPoint.x + d.x, currentPoint.y + d.y } : d;
 
-    // Thêm Bezier vào đường path
+    // Add Bezier into path
     path.AddBezier(currentPoint.x, currentPoint.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
 
-    // Cập nhật d2 (điểm điều khiển cuối cùng)
+    // Upadate last control point
     d2.x = p2.x;
     d2.y = p2.y;
 
-    // Cập nhật currentPoint
+    // Update currentPoint
     if (command == 'c') {
         currentPoint.x += d.x;
         currentPoint.y += d.y;
@@ -542,18 +533,17 @@ void Path::handleCubicBezier(const string& data, int& idx, char command, Graphic
 void Path::handleSmoothQuadraticBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& lastControlPoint, char& lastCommand) {
     point d, controlPoint;
 
-    // Tính toán điểm điều khiển dựa trên lệnh trước đó
+    // Calculate control point base on last command
     if (lastCommand == 'Q' || lastCommand == 'T') {
         controlPoint.x = 2 * currentPoint.x - lastControlPoint.x;
         controlPoint.y = 2 * currentPoint.y - lastControlPoint.y;
     }
     else {
-        // Nếu không có lệnh trước hoặc không liên quan, điểm điều khiển trùng với điểm hiện tại
+        // If there is no command before, control point is set to current point
         controlPoint.x = currentPoint.x;
         controlPoint.y = currentPoint.y;
     }
 
-    // Đọc điểm đích
     readSinglePointFirst(data, idx, d);
 
     if (command == 't' || command == 'T') {
@@ -567,18 +557,17 @@ void Path::handleSmoothQuadraticBezier(const string& data, int& idx, char comman
             endX, endY
         );
 
-        // Cập nhật currentPoint
         currentPoint.x = endX;
         currentPoint.y = endY;
     }
 
-    // Cập nhật trạng thái
-    lastControlPoint = controlPoint; // Lưu điểm điều khiển cuối cùng
-    lastCommand = command; // Lưu lệnh vừa xử lý
+    // Update status
+    lastControlPoint = controlPoint; // Save last point
+    lastCommand = command; // SAve last command
 }
 
 void Path::configurePen(Pen& pen, const string& linecap, const string& linejoin) {
-    // Cấu hình LineCap
+    // LineCap
     if (linecap == "round") {
         pen.SetStartCap(LineCapRound);
         pen.SetEndCap(LineCapRound);
@@ -592,13 +581,12 @@ void Path::configurePen(Pen& pen, const string& linecap, const string& linejoin)
         pen.SetEndCap(LineCapFlat);
     }
     else {
-    // Cảnh báo nếu giá trị không hợp lệ
+    // Warning if value is invalid
     cout << "Warning: Invalid linecap value \"" << linecap << "\". Using default (flat) instead." << endl;
     pen.SetStartCap(LineCapFlat);
     pen.SetEndCap(LineCapFlat);
     }
-
-    // Cấu hình LineJoin
+    // LineJoin
     if (linejoin == "round") {
         pen.SetLineJoin(LineJoinRound);
     }
@@ -609,7 +597,7 @@ void Path::configurePen(Pen& pen, const string& linecap, const string& linejoin)
         pen.SetLineJoin(LineJoinMiter);
     }
     else {
-        // Cảnh báo nếu giá trị không hợp lệ
+        // Warning if value is invalid
         cout << "Warning: Invalid linejoin value \"" << linejoin << "\". Using default (miter) instead." << endl;
         pen.SetLineJoin(LineJoinMiter);
     }
