@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Shapes.h"
 
-// In each function, we read the value of an attribute of a shape (color, stroke-width, etc.) and assign it to the corresponding field of the shape.
 void readLine(string name, string value, line* line) {
     if (name == "stroke-opacity") {
         line->strokeOpacity = stof(value);
@@ -106,7 +105,6 @@ void readRectangle(string name, string value, rectangle* rect) {
     else if (name == "transform") {
         readTransform(value, rect->trs);
     }
-    //style
     else if (name == "style") {
         istringstream iss(trim(value));
         string tmp;
@@ -427,8 +425,7 @@ void readText(string name, string value, text* text) {
     }
 }
 
-//in terms of holding Gradient, all the information of radial gradient is passed as linear gradient to process
-VOID line::draw(Graphics& graphics, defs def) {
+void line::draw(Graphics& graphics, defs def) {
     GraphicsState save = graphics.Save();
     Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
     int index = 0;
@@ -447,12 +444,11 @@ VOID line::draw(Graphics& graphics, defs def) {
     graphics.Restore(save);
 }
 
-VOID rectangle::draw(Graphics& graphics, defs def) {
+void rectangle::draw(Graphics& graphics, defs def) {
     GraphicsState save = graphics.Save();
     Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
     SolidBrush fillBrush(Color(static_cast<int>(fillOpacity * 255), fillColor.red, fillColor.green, fillColor.blue));
     int index = 0;
-    //apply transformations
     for (int i = 0; i < trs.type.size(); i++) {
         if (trs.type[i] == "translate")
             graphics.TranslateTransform(trs.value[index], trs.value[index + 1]);
@@ -464,7 +460,6 @@ VOID rectangle::draw(Graphics& graphics, defs def) {
         if (trs.type[i] == "rotate")
             index--;
     }
-    //apply gradient
     if (fillId != "") {
         for (int i = 0; i < def.lgList.size(); i++) {
             if (fillId == def.lgList[i].id) {
@@ -503,7 +498,7 @@ VOID rectangle::draw(Graphics& graphics, defs def) {
     graphics.Restore(save);
 }
 
-VOID circle::draw(Graphics& graphics, defs def) {
+void circle::draw(Graphics& graphics, defs def) {
     GraphicsState save = graphics.Save();
     Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
     SolidBrush fillBrush(Color(static_cast<int>(fillOpacity * 255), fillColor.red, fillColor.green, fillColor.blue));
@@ -558,7 +553,7 @@ VOID circle::draw(Graphics& graphics, defs def) {
 }
 
 
-VOID ellipse::draw(Graphics& graphics, defs def) {
+void ellipse::draw(Graphics& graphics, defs def) {
     GraphicsState save = graphics.Save();
     Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
     SolidBrush fillBrush(Color(static_cast<int>(fillOpacity * 255), fillColor.red, fillColor.green, fillColor.blue));
@@ -613,7 +608,7 @@ VOID ellipse::draw(Graphics& graphics, defs def) {
 }
 
 
-VOID polygon::draw(Graphics& graphics, defs def) {
+void polygon::draw(Graphics& graphics, defs def) {
     GraphicsState save = graphics.Save();
     Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
     SolidBrush fillBrush(Color(static_cast<int>(fillOpacity * 255), fillColor.red, fillColor.green, fillColor.blue));
@@ -673,7 +668,7 @@ VOID polygon::draw(Graphics& graphics, defs def) {
 }
 
 
-VOID polyline::draw(Graphics& graphics, defs def) {
+void polyline::draw(Graphics& graphics, defs def) {
     GraphicsState save = graphics.Save();
     Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
     int index = 0;
@@ -733,7 +728,10 @@ VOID polyline::draw(Graphics& graphics, defs def) {
 }
 
 
-VOID text::draw(Graphics& graphics, defs def) {
+void text::draw(Graphics& graphics, defs def) {
+    SolidBrush fillBrush(Color(static_cast<int>(fillOpacity * 255), fillColor.red, fillColor.green, fillColor.blue));
+    Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
+    
     for (int i = 0; i < content.length(); i++) {
         if (content[i] == '\n') {
             content[i] = ' ';
@@ -764,31 +762,25 @@ VOID text::draw(Graphics& graphics, defs def) {
     FontFamily fontFamily(wFontFamily.c_str());
     Font font(&fontFamily, static_cast<REAL>(fontSize), italic ? FontStyleItalic : FontStyleRegular, UnitPixel);
 
-    StringFormat stringFormat; // Create a StringFormat object with the each line of text, and the block
+    StringFormat stringFormat; 
     if (textAnchor == "middle") {
-        stringFormat.SetAlignment(StringAlignmentCenter); // Center alignment
+        stringFormat.SetAlignment(StringAlignmentCenter); 
     }
     else if (textAnchor == "end") {
-        stringFormat.SetAlignment(StringAlignmentFar); // Right and center alignment
+        stringFormat.SetAlignment(StringAlignmentFar); 
         rate = 0.15;
     }
     else
     {
-        stringFormat.SetAlignment(StringAlignmentNear); // Left and center alignment
+        stringFormat.SetAlignment(StringAlignmentNear); 
         rate = -0.15;
     }
     PointF pointF(static_cast<REAL>(start.x + dx + rate * fontSize), static_cast<REAL>(start.y + dy - 0.9 * fontSize));
-    // Create a GraphicsPath
     GraphicsPath path;
 
-    // Add the string to the path
     const wstring wstr = wstring(content.begin(), content.end());
     path.AddString(wstr.c_str(), -1, &fontFamily, italic ? FontStyleItalic : FontStyleRegular, static_cast<REAL>(fontSize), pointF, &stringFormat);
 
-    // Create a solid brush for filling
-    SolidBrush fillBrush(Color(static_cast<int>(fillOpacity * 255), fillColor.red, fillColor.green, fillColor.blue));
-    Pen pen(Color(static_cast<int>(strokeOpacity * 255), strokeColor.red, strokeColor.green, strokeColor.blue), static_cast<REAL>(strokeWidth));
-    // Fill the path with the solid brush
     graphics.FillPath(&fillBrush, &path);
     if (strokeWidth != 0)
         graphics.DrawPath(&pen, &path);
