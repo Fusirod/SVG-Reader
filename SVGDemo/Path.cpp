@@ -524,36 +524,6 @@ void Path::handleVerticalLineTo(const string& data, int& idx, char command, Grap
     lastCommand = command;
 }
 
-//void Path::handleCubicBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& d2, char& lastCommand) {
-//    point d1, d, control2;
-//
-//    // Đọc các điểm điều khiển và điểm kết thúc
-//    readSinglePointFirst(data, idx, d1);
-//    readSinglePointFirst(data, idx, control2);
-//    readSinglePointFirst(data, idx, d);
-//
-//    if (command == 'c') {
-//        path.AddBezier(currentPoint.x, currentPoint.y, currentPoint.x + d1.x, currentPoint.y + d1.y, currentPoint.x + control2.x, currentPoint.y + control2.y, currentPoint.x + d.x, currentPoint.y + d.y);
-//
-//        d2.x = currentPoint.x + control2.x;
-//        d2.y = currentPoint.y + control2.y;
-//
-//        currentPoint.x += d.x;
-//        currentPoint.y += d.y;
-//    }
-//    else if (command == 'C') {
-//        path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, control2.x, control2.y, d.x, d.y);
-//
-//        d2.x = control2.x;
-//        d2.y = control2.y;
-//
-//        currentPoint.x = d.x;
-//        currentPoint.y = d.y;
-//    }
-//
-//    lastCommand = command;
-//}
-
 void Path::handleCubicBezier(const string& data, int& idx, char command, GraphicsPath& path, point& currentPoint, point& d2, char& lastCommand) {
     point d1, control2, d;
 
@@ -603,29 +573,6 @@ void Path::handleSmoothQuadraticBezier(const string& data, int& idx, char comman
 
     // Đọc điểm đích
     readSinglePointFirst(data, idx, d);
-
-    //if (command == 't') {
-    //    // Xử lý tọa độ tương đối
-    //    path.AddBezier(
-    //        currentPoint.x, currentPoint.y,
-    //        controlPoint.x, controlPoint.y,
-    //        controlPoint.x, controlPoint.y,
-    //        currentPoint.x + d.x, currentPoint.y + d.y
-    //    );
-    //    currentPoint.x += d.x;
-    //    currentPoint.y += d.y;
-    //}
-    //else if (command == 'T') {
-    //    // Xử lý tọa độ tuyệt đối
-    //    path.AddBezier(
-    //        currentPoint.x, currentPoint.y,
-    //        controlPoint.x, controlPoint.y,
-    //        controlPoint.x, controlPoint.y,
-    //        d.x, d.y
-    //    );
-    //    currentPoint.x = d.x;
-    //    currentPoint.y = d.y;
-    //}
 
     if (command == 't' || command == 'T') {
         float endX = (command == 't') ? currentPoint.x + d.x : d.x;
