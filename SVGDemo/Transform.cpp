@@ -2,7 +2,6 @@
 
 void transformImage(Graphics& graphic, float angle, float width, float height, float scrollX, float scrollY, float scale) {
     PointF center(static_cast<REAL>((width / 2 + scrollX) * scale), static_cast<REAL>((height / 2 + scrollY) * scale));
-    // Applying all the transformations
     Matrix transformMatrix;
     transformMatrix.Translate(scrollX, scrollY);   // Translate first
     transformMatrix.Scale(scale, scale);           // Then scale
@@ -80,18 +79,16 @@ void readTransform(string val, transformShape& trs) {
 }
 
 void applyTransform(LinearGradientBrush& lgbrush, transformShape& trs) {
-    // Check if there no transformation
     if (trs.type.empty()) {
         return;
     }
-    // Check if there exactly 3 transformations, use multiply matrix transformation
+    
     if (trs.type.size() == 3) {
         Matrix matrix(trs.value[0], trs.value[1], trs.value[2], trs.value[3], trs.value[4], trs.value[5]);
         lgbrush.MultiplyTransform(&matrix, MatrixOrderAppend);
         return;
     }
 
-    // Use loop to solve all the transformation
     for (int i = 0; i < static_cast<int>(trs.type.size()); ++i) {
         const string& type = trs.type[i];
         if (type == "translate") {
