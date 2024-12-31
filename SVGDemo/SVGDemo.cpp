@@ -152,7 +152,6 @@ static void CleanResources(vector<shapes*>& shapes, ULONG_PTR token)
     GdiplusShutdown(token);
 }
 
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     bool isDragging = false;
     defs def;
