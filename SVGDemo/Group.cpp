@@ -103,125 +103,104 @@ void Group::groupTraversal(rapidxml::xml_node<>* root, float& maxWidth, float& m
 }
 
 void Group::processLine(xml_node<>* node, vector<shapes*>& shape) {
-	//line* tmpLine = new line();
 	unique_ptr<line> tmpLine = make_unique<line>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readLine(name, value, tmpLine.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readLine(attri.first, attri.second, tmpLine);
 		processAttri(attri.first, attri.second);
 
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readLine(attri->name(), attri->value(), tmpLine);
 		processAttri(attri->name(), attri->value());
 
 	shape.push_back(tmpLine.release());
 }
 
 void Group::processRectangle(xml_node<>* node, vector<shapes*>& shape) {
-	//rectangle* tmpRect = new rectangle();
 	unique_ptr<rectangle> tmpRect = make_unique<rectangle>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readRectangle(name, value, tmpRect.get());
 		};
 	for (const auto& attri : attributes)
-		//readRectangle(attri.first, attri.second, tmpRect);
 		processAttri(attri.first, attri.second);
 
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readRectangle(attri->name(), attri->value(), tmpRect);
 		processAttri(attri->name(), attri->value());
 	
 	shape.push_back(tmpRect.release());
 }
 
 void Group::processEllipse(xml_node<>* node, vector<shapes*>& shape) {
-	//ellipse* tmpEllipse = new ellipse();
 	unique_ptr<ellipse> tmpEllipse = make_unique<ellipse>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readEllipse(name, value, tmpEllipse.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readEllipse(attri.first, attri.second, tmpEllipse);
 		processAttri(attri.first, attri.second);
 	
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readEllipse(attri->name(), attri->value(), tmpEllipse);
 		processAttri(attri->name(), attri->value());
 	
 	shape.push_back(tmpEllipse.release());
 }
 
 void Group::processCircle(xml_node<>* node, vector<shapes*>& shape) {
-	//circle* tmpCircle = new circle();
 	unique_ptr<circle> tmpCircle = make_unique<circle>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readCircle(name, value, tmpCircle.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readCircle(attri.first, attri.second, tmpCircle);
 		processAttri(attri.first, attri.second);
 
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readCircle(attri->name(), attri->value(), tmpCircle);
 		processAttri(attri->name(), attri->value());
 
 	shape.push_back(tmpCircle.release());
 }
 
 void Group::processPolygon(xml_node<>* node, vector<shapes*>& shape) {
-	//polygon* tmpPolygon = new polygon();
 	unique_ptr<polygon> tmpPolygon = make_unique<polygon>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readPolygon(name, value, tmpPolygon.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readPolygon(attri.first, attri.second, tmpPolygon);
 		processAttri(attri.first, attri.second);
 
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readPolygon(attri->name(), attri->value(), tmpPolygon);
 		processAttri(attri->name(), attri->value());
 
 	shape.push_back(tmpPolygon.release());
 }
 
 void Group::processPolyline(xml_node<>* node, vector<shapes*>& shape) {
-	//polyline* tmpPolyline = new polyline();
 	unique_ptr<polyline> tmpPolyline = make_unique<polyline>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readPolyline(name, value, tmpPolyline.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readPolyline(attri.first, attri.second, tmpPolyline);
 		processAttri(attri.first, attri.second);
 	
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readPolyline(attri->name(), attri->value(), tmpPolyline);
 		processAttri(attri->name(), attri->value());
 	
 	shape.push_back(tmpPolyline.release());
 }
 
 void Group::processText(xml_node<>* node, vector<shapes*>& shape) {
-	//text* tmpText = new text();
 	unique_ptr<text> tmpText = make_unique<text>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readText(name, value, tmpText.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readText(attri.first, attri.second, tmpText);
 		processAttri(attri.first, attri.second);
 	
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readText(attri->name(), attri->value(), tmpText);
 		processAttri(attri->name(), attri->value());
 	
 	tmpText->content = node->value();
@@ -229,18 +208,15 @@ void Group::processText(xml_node<>* node, vector<shapes*>& shape) {
 }
 
 void Group::processPath(xml_node<>* node, vector<shapes*>& shape) {
-	//Path* tmpPath = new Path();
 	unique_ptr<Path> tmpPath = make_unique<Path>();
 	auto processAttri = [&](const string& name, const string& value) {
 		readPath(name, value, tmpPath.get());
 		};
 
 	for (const auto& attri : attributes)
-		//readPath(attribute.first, attribute.second, tmpPath);
 		processAttri(attri.first, attri.second);
 	
 	for (xml_attribute<>* attri = node->first_attribute(); attri; attri = attri->next_attribute())
-		//readPath(attri->name(), attri->value(), tmpPath);
 		processAttri(attri->name(), attri->value());
 	
 	shape.push_back(tmpPath.release());
