@@ -265,6 +265,7 @@ void Path::draw(Graphics& graphic, defs def) {
                 break;
             }
         }
+        
         for (int i = 0; i < def.rgList.size(); i++) {
             if (fillId == def.rgList[i].id) {
                 float* points = def.rgList[i].getPointList();
@@ -293,7 +294,7 @@ void Path::handleClosePath(GraphicsPath& path, point& currentPoint, point& start
     path.CloseFigure();  // Close path
     startPoint.x = currentPoint.x;  // Update new starting point
     startPoint.y = currentPoint.y;
-    //  Save last command
+    // Save last command
     lastCommand = (lastCommand == 'z' || lastCommand == 'Z') ? 'Z' : 'z';
 }
 
