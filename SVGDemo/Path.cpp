@@ -68,64 +68,53 @@ void Path::readSinglePointFirst(const string& data, int& idx, point& p) {
     try {
         bool negativeX = false, negativeY = false;
 
-        // Tìm kiếm phần tử số đầu tiên cho x
+        // Find first element for x
         while (idx < data.size() && !isdigit(data[idx]) && data[idx] != '-' && data[idx] != '.') {
-            idx++;  // Bỏ qua các ký tự không phải là số, dấu '-' hoặc dấu '.'
+            idx++;  
         }
 
-        // Kiểm tra dấu âm cho x
+        // Check sign for x
         if (idx < data.size() && data[idx] == '-') {
             negativeX = true;
             idx++;
         }
 
-        // Trích xuất giá trị x, xử lý số mũ (nếu có)
+        // Export value of x
         size_t endPos;
-        p.x = stof(data.substr(idx), &endPos);  // Chuyển đổi chuỗi thành số thực
-        idx += endPos;  // Cập nhật chỉ số idx sau khi trích xuất số
+        p.x = stof(data.substr(idx), &endPos);  // Convert to interger
+        idx += endPos;  // Update idx
         if (negativeX)
-            p.x *= -1;  // Nếu có dấu âm, nhân với -1
+            p.x *= -1;  // Solution if x is negative
 
-        // Tìm kiếm phần tử số tiếp theo cho y
+        // Find next element for y
         while (idx < data.size() && !isdigit(data[idx]) && data[idx] != '-' && data[idx] != '.') {
-            idx++;  // Bỏ qua các ký tự không phải là số, dấu '-' hoặc dấu '.'
+            idx++;
         }
 
-        // Kiểm tra dấu âm cho y
+        // Check sign for y
         if (idx < data.size() && data[idx] == '-') {
             negativeY = true;
             idx++;
         }
 
-        // Trích xuất giá trị y, xử lý số mũ (nếu có)
-        p.y = stof(data.substr(idx), &endPos);  // Chuyển đổi chuỗi thành số thực
-        idx += endPos;  // Cập nhật chỉ số idx sau khi trích xuất số
+        // Export value of y
+        p.y = stof(data.substr(idx), &endPos);  // Convert to interger
+        idx += endPos;  // Update idx
         if (negativeY)
-            p.y *= -1;  // Nếu có dấu âm, nhân với -1
+            p.y *= -1;  // Solution if y is negative
     }
     catch (const exception& e) {
-        // Xử lý lỗi nếu không thể chuyển đổi chuỗi thành số
+        // Solution if can't convert string into interger
         cout << "Error parsing point at idx " << idx << ": " << e.what() << endl;
-        p.x = p.y = 0;  // Gán giá trị mặc định nếu gặp lỗi
+        p.x = p.y = 0;  
     }
 }
 
 float Path::readSinglePointSecond(const string& data, int& idx) {
     try {
-        //bool negative = false;
-        //string n = "0";
-
-        // Bỏ qua các ký tự không hợp lệ trước khi gặp số
         while (idx < data.size() && !isdigit(data[idx]) && data[idx] != '-' && data[idx] != '.') {
             idx++;
         }
-
-        // Kiểm tra dấu âm
-        /*if (data[idx] == '-') {
-            negative = true;
-            idx++;
-        }*/
-
         if (idx >= data.size()) {
             cout << "Error: No valid number found at idx: " << idx << endl;
             return 0.0f;
@@ -135,25 +124,16 @@ float Path::readSinglePointSecond(const string& data, int& idx) {
         if (isNegative)
             idx++;
 
-        // Trích xuất phần số thực
+        // Extract real part
         size_t endPos;
-        //n = data.substr(idx);
-        //float result = stof(n, &endPos);
         float result = stof(data.substr(idx), &endPos);
         idx += endPos;
-
-        // Nếu có dấu âm, nhân với -1
-        //if (negative) {
-        //    result *= -1;
-        //}
-
-        //return result;
         return isNegative ? -result : result;
     }
     catch (const exception& e) {
-        // Xử lý lỗi khi không thể chuyển chuỗi thành số
+        // Solution if can't convert string into interger
         cout << "Error parsing float: " << e.what() << endl;
-        return 0.0f; // Trả về giá trị mặc định nếu có lỗi
+        return 0.0f;
     }
 }
 
@@ -262,7 +242,7 @@ void Path::draw(Graphics& graphic, defs def) {
             }
         }
         else {
-            idx++; // Bỏ qua ký tự không hợp lệ
+            idx++;
         }
     }
 
@@ -310,63 +290,54 @@ Draw:
 }
 
 void Path::handleClosePath(GraphicsPath& path, point& currentPoint, point& startPoint, char& lastCommand) {
-    path.CloseFigure();  // Đóng đường path lại
-    startPoint.x = currentPoint.x;  // Cập nhật điểm bắt đầu
+    path.CloseFigure();  // Close path
+    startPoint.x = currentPoint.x;  // Update new starting point
     startPoint.y = currentPoint.y;
-    //lastCommand = 'z';  // Lưu lại lệnh đã thực thi
+    //  Save last command
     lastCommand = (lastCommand == 'z' || lastCommand == 'Z') ? 'Z' : 'z';
 }
 
 void Path::handleArcTo(GraphicsPath& path, const string& data, int& idx, point& currentPoint, char command) {
-    point r, d, d1, d2, d3; // Đọc các giá trị từ chuỗi data
-    readSinglePointFirst(data, idx, r); // Đọc bán kính
-    float rotation = readSinglePointSecond(data, ++idx); // Đọc góc quay
-    float largeArc = readSinglePointSecond(data, ++idx); // Đọc chế độ "large arc"
-    float sweep = readSinglePointSecond(data, ++idx); // Đọc chế độ "sweep"
-    readSinglePointFirst(data, ++idx, d); // Đọc điểm đích
-
-    // Nếu là lệnh tương đối ('a'), cộng tọa độ hiện tại vào điểm đích
+    // Read data
+    point r, d, d1, d2, d3; 
+    readSinglePointFirst(data, idx, r); 
+    float rotation = readSinglePointSecond(data, ++idx); 
+    float largeArc = readSinglePointSecond(data, ++idx); 
+    float sweep = readSinglePointSecond(data, ++idx); 
+    readSinglePointFirst(data, ++idx, d); 
     if (command == 'a') {
         d.x += currentPoint.x;
         d.y += currentPoint.y;
     }
 
-    // Chuyển đổi góc từ độ sang radian
     float angle = rotation * M_PI / 180.0f;
     float cosAngle = cos(angle);
     float sinAngle = sin(angle);
 
-    // Tính tọa độ trung gian d1
     float cons = cosAngle * cosAngle - (sinAngle * -sinAngle);
     d1.x = cons * (currentPoint.x - d.x) / 2.0f;
     d1.y = cons * (currentPoint.y - d.y) / 2.0f;
 
-    // Kiểm tra bán kính
     float checkR = (d1.x * d1.x) / (r.x * r.x) + (d1.y * d1.y) / (r.y * r.y);
     if (checkR > 1.0f) {
         r.x *= sqrt(checkR);
         r.y *= sqrt(checkR);
     }
 
-    // Tính điểm trung gian d2
     int sign = (largeArc == sweep) ? -1 : 1;
     float num = abs(r.x * r.x * r.y * r.y - r.x * r.x * d1.y * d1.y - r.y * r.y * d1.x * d1.x);
     float den = r.x * r.x * d1.y * d1.y + r.y * r.y * d1.x * d1.x;
     d2.x = sign * sqrt(num / den) * r.x * d1.y / r.y;
     d2.y = sign * sqrt(num / den) * -r.y * d1.x / r.x;
 
-    // Tính tọa độ trung tâm d3
-    //cons = cosAngle * cosAngle - (sinAngle * -sinAngle); 
     cons = cosAngle * cosAngle - (sinAngle * sinAngle);
     d3.x = cons * d2.x + (currentPoint.x + d.x) / 2.0f;
     d3.y = cons * d2.y + (currentPoint.y + d.y) / 2.0f;
 
-    // Tính góc bắt đầu và góc quét
     float angle1 = atan2((d1.y - d2.y) / r.y, (d1.x - d2.x) / r.x);
     float angle2 = atan2((-d2.y - d1.y) / r.y, (-d2.x - d1.x) / r.x);
     float deltaAngle = angle2 - angle1;
 
-    // Điều chỉnh nếu góc quét không phù hợp
     if (sweep == 0 && deltaAngle > 0) {
         deltaAngle -= 2 * M_PI;
     }
@@ -374,13 +345,9 @@ void Path::handleArcTo(GraphicsPath& path, const string& data, int& idx, point& 
         deltaAngle += 2 * M_PI;
     }
 
-    // Thêm cung tròn vào GraphicsPath
-    /*path.AddArc(d3.x - r.x, d3.y - r.y, 2 * r.x, 2 * r.y,
-        fmod((long double)(angle1 * 180.0f) / M_PI, 360),
-        fmod((long double)(deltaAngle * 180.0f) / M_PI, 360));*/
     path.AddArc(d3.x - r.x, d3.y - r.y, 2 * r.x, 2 * r.y, fmod(angle1 * 180.0f / M_PI, 360), fmod(deltaAngle * 180.0f / M_PI, 360));
 
-    // Cập nhật tọa độ hiện tại
+    // Update new co-ordinates after calculating
     currentPoint.x = d.x;
     currentPoint.y = d.y;
 }
