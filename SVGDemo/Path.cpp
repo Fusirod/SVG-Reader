@@ -161,7 +161,6 @@ void Path::draw(Graphics& graphic, defs def) {
     point r, d, d1, d2, d3;
     bool firstPoint = true;
     idx = 0;
-    //float singleType;
     char lastCommand = ' ';
 
     while (idx < data.length()) {
@@ -361,7 +360,6 @@ void Path::handleQuadraticBezier(const string& data, int& idx, char command, Gra
     readSinglePointFirst(data, idx, d);
 
     if (command == 'q') {
-        //path.AddBezier(currentPoint.x, currentPoint.y, currentPoint.x + d1.x, currentPoint.y + d1.y, currentPoint.x + d1.x, currentPoint.y + d1.y, currentPoint.x + d.x, currentPoint.y + d.y);
         path.AddBezier(currentPoint.x, currentPoint.y,
             currentPoint.x + d1.x, currentPoint.y + d1.y,  // First control point
             currentPoint.x + d1.x, currentPoint.y + d1.y,  // Second control point
@@ -372,8 +370,6 @@ void Path::handleQuadraticBezier(const string& data, int& idx, char command, Gra
         currentPoint.y += d.y;
     }
     else if (command == 'Q') {
-        //path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, d1.x, d1.y, d.x, d.y);
-
         path.AddBezier(currentPoint.x, currentPoint.y,
             d1.x, d1.y,  // First control point
             d1.x, d1.y,  // Second control point
@@ -403,26 +399,21 @@ void Path::handleSmoothCubicBezier(const string& data, int& idx, char command, G
     }
 
     if (command == 's') {
-        //path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, currentPoint.x + d3.x, currentPoint.y + d3.y, currentPoint.x + d.x, currentPoint.y + d.y);
-
         path.AddBezier(currentPoint.x, currentPoint.y,
             currentPoint.x + d1.x, currentPoint.y + d1.y,
             currentPoint.x + d3.x, currentPoint.y + d3.y,
             currentPoint.x + d.x, currentPoint.y + d.y);
+        
         currentPoint.x += d.x;
         currentPoint.y += d.y;
         d2.x = currentPoint.x + d3.x;
         d2.y = currentPoint.y + d3.y;
     }
     else if (command == 'S') {
-
-        //path.AddBezier(currentPoint.x, currentPoint.y, d1.x, d1.y, d3.x, d3.y, d.x, d.y);
-
         path.AddBezier(currentPoint.x, currentPoint.y,
             d1.x, d1.y,
             d3.x, d3.y,
             d.x, d.y);
-
 
         currentPoint.x = d.x;
         currentPoint.y = d.y;
