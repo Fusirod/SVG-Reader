@@ -393,20 +393,6 @@ void Path::handleSmoothCubicBezier(const string& data, int& idx, char command, G
     readSinglePointFirst(data, idx, d3);
     readSinglePointFirst(data, idx, d);
 
-    // Xác định điểm điều khiển thứ nhất (d1)
-    /*if (lastCommand == 'c' || lastCommand == 'C') {
-        d1.x = 2 * currentPoint.x - d2.x;
-        d1.y = 2 * currentPoint.y - d2.y;
-    }
-    else if (lastCommand == 's' || lastCommand == 'S') {
-        d1.x = 2 * currentPoint.x - d2.x;
-        d1.y = 2 * currentPoint.y - d2.y;
-    }
-    else {
-        d1.x = currentPoint.x;
-        d1.y = currentPoint.y;
-    }*/
-
     if (lastCommand == 'c' || lastCommand == 'C' || lastCommand == 's' || lastCommand == 'S') {
         // Sử dụng điểm điều khiển đối xứng với d2
         d1.x = 2 * currentPoint.x - d2.x;
@@ -460,8 +446,6 @@ void Path::handleMoveTo(const string& data, int& idx, char command, GraphicsPath
         firstPoint = false;
         startPoint.x = (command == 'm') ? d.x + currentPoint.x : d.x;
         startPoint.y = (command == 'm') ? d.y + currentPoint.y : d.y;
-        /*currentPoint.x = startPoint.x;
-        currentPoint.y = startPoint.y;*/
         currentPoint = startPoint;
         path.StartFigure();
     }
