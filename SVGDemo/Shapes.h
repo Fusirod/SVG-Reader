@@ -88,7 +88,7 @@ void readPolygon(string name, string value, polygon* polygon);
 void readPolyline(string name, string value, polyline* polyline);
 void readText(string name, string value, text* text);
 
-#endif // !SHAPES_H
+#endif 
 
 
 
