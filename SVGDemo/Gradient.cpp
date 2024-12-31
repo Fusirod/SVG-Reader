@@ -3,13 +3,13 @@
 
 void readStop(string name, string value, stopPoint& stop) {
     if (name == "stop-color") 
-        stop.stopColor = readRGB(value); // Xử lý màu sắc
+        stop.stopColor = readRGB(value); // Color solving
     
     else if (name == "stop-opacity") 
-        stop.stopOpacity = clarify(value); // Xử lý độ trong suốt
+        stop.stopOpacity = clarify(value); // Opacity solving
     
     else if (name == "offset") 
-        stop.offset = clarify(value); // Xử lý vị trí điểm dừng
+        stop.offset = clarify(value); // StopPoint solving
     
 }
 
@@ -85,7 +85,6 @@ void readRadialGradient(string name, string value, radialGradient& rg) {
 float* Gradient::getPointList() {
     int size = stopList.size();
 
-    // Kiểm tra và điều chỉnh kích thước nếu cần
     if (stopList[0].offset != 0) {
         size++;
     }
@@ -93,22 +92,18 @@ float* Gradient::getPointList() {
         size++;
     }
 
-    // Cấp phát bộ nhớ cho mảng điểm
     float* points = new float[size];
 
-    // Điền điểm đầu tiên nếu cần
     int index = 0;
     if (stopList[0].offset != 0) {
         points[index++] = 0.0f;
     }
 
-    // Điền các điểm từ stopList
     for (const auto& stop : stopList) {
         if (index < size)
             points[index++] = stop.offset;
     }
 
-    // Điền điểm cuối cùng nếu cần
     if (stopList[stopList.size() - 1].offset != 1 && index < size) {
         points[index] = 1.0f;
     }
@@ -124,14 +119,13 @@ Color* Gradient::getColorList() {
     Color* colors = new Color[size];
 
     for (int i = 0; i < size; i++) {
-        // Đảm bảo stopOpacity nằm trong khoảng [0.0, 1.0]
         float opacity = clamp(stopList[i].stopOpacity, 0.0f, 1.0f) * 255.0f;
         
         colors[i] = Color(
-            opacity, // Giá trị opacity
-            stopList[i].stopColor.red,  // Giá trị màu đỏ
-            stopList[i].stopColor.green,  // Giá trị màu xanh lá
-            stopList[i].stopColor.blue   // Giá trị màu xanh dương
+            opacity, 
+            stopList[i].stopColor.red, 
+            stopList[i].stopColor.green,  
+            stopList[i].stopColor.blue   
         );
     }
 
